@@ -77,4 +77,7 @@ Lowest non-zero threshold: 0.427
 ```
 Elapsed time: 43.60 seconds
 
+**Example Output Figures:**
 
+![](https://github.com/agadin/BME_Fondations_Final_Project/blob/main/images/Spectrum_Resistant_to_Ciprofloxacin.png)
+![](https://github.com/agadin/DRIAMS_Antimicrobial_to_Resistant_Spectral/blob/main/images/Example_ROC_Curve.png)
