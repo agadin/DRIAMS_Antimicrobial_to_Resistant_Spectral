@@ -1,5 +1,5 @@
 # Overview
-* `mater_fil_creator.py`- Creates a master `.csv` file of all institues and years
+* `mater_fil_creator.py`- Creates a master `.csv` file of all institutes and years
 * `antimicrobials_to_organism_spectral.py` - Trains a simple Tensorflow model to predict resistant organism spectral data for a given antimicrobial
 
 **Produced Figures:** Resistant organism spectral graph and ROC curve
@@ -8,10 +8,10 @@
 > [!CAUTION]
 > Required step!
 
-The data source can be easily downloaded from [Kaggle](https://www.kaggle.com/datasets/drscarlat/driams/data) that already has the processed CSVs for each institue and year without the added bloat (and data requirement of 144.84 GB!). The original data source can be found [here](https://datadryad.org/stash/dataset/doi:10.5061/dryad.bzkh1899q)[^1]. This guide assumes that the datasource is the trimed down Kaggle version but the scripts should work for both data sources (the original data source is untested however because uncompressing 144.84 GB takes too long).
+The data source can be easily downloaded from [Kaggle](https://www.kaggle.com/datasets/drscarlat/driams/data) which already has the processed CSVs for each institute and year without the added bloat (and data requirement of 144.84 GB!). The original data source can be found [here](https://datadryad.org/stash/dataset/doi:10.5061/dryad.bzkh1899q)[^1]. This guide assumes that the data source is the trimmed-down Kaggle version but the scripts should work for both data sources (the original data source is untested however because uncompressing 144.84 GB takes too long).
 [^1]: Weis, Caroline et al. (2022). DRIAMS: Database of Resistance Information on Antimicrobials and MALDI-TOF Mass Spectra [Dataset]. Dryad. https://doi.org/10.5061/dryad.bzkh1899q
 
-After downloading the data, open `mater_fil_creator.py` with your program of choice and edit `download_location` on line 14 to the folder which contains the 4 sub folders, DRIAMS-A to DRIAMS-D. Next, edit `cleancsv_file`, on line 16, to specify where you would like to save the created master csv.
+After downloading the data, open `mater_fil_creator.py` with your program of choice and edit `download_location` on line 14 to the folder that contains the 4 subfolders, DRIAMS-A to DRIAMS-D. Next, edit `cleancsv_file`, on line 16, to specify where you would like to save the created master csv.
 
 **Expected Output:**
 ```
@@ -27,11 +27,11 @@ DRIAMS-C in 2018
 > `mater_fil_creator.py` is a fork of Kaggle user LYSINE's script found in [DRIAMS - Master Metadata File](https://www.kaggle.com/code/hlysine/driams-master-metadata-file).
 
 ## Running the model 
-Open `antimicrobials_to_organism_spectral.py` with your python program of choice. Edit `download_location` on line 25 to the folder which contains the 4 sub folders, DRIAMS-A to DRIAMS-D (the same location that was specified in the previous section. Next, edit `cleancsv_file`, on line 16, to specify where you saved the master csv created in the step before.
-The next step is to edit the `organism` variable on line 40 to specifiy if you would like the model to only produce ressistant spectral data for a given microbe for only a specific organism. Leaving this blank will train the model to produce general resistant spectral data across all microbes in the data set. After that, edit `antimicrobial` on line 41 to the antimicrobial you wish to produce probable resistant organism spectral figures for.
+Open `antimicrobials_to_organism_spectral.py` with your python program of choice. Edit `download_location` on line 25 to the folder that contains the 4 subfolders, DRIAMS-A to DRIAMS-D (the same location that was specified in the previous section. Next, edit `cleancsv_file`, on line 16, to specify where you saved the master csv created in the step before.
+The next step is to edit the `organism` variable on line 40 to specify if you would like the model to only produce resistant spectral data for a given microbe for only a specific organism. Leaving this blank will train the model to produce general resistant spectral data across all microbes in the data set. After that, edit `antimicrobial` on line 41 to the antimicrobial you wish to produce probable resistant organism spectral figures for.
 After completing the paragraph above, run the now modified `antimicrobials_to_organism_spectral.py` file. The general elements of the script are as follows:
-1. **Formatting and Splitting:** the `all_clean.csv` file created in the previous section is converted into a Pandas database and all unecessary antimicrobial columns will be removed (if the `organism` variable is NOT blank all irrelevent organism rows will be removed as well. Next, on line 50 all intermediary, `I`, resistances are converted to absolute resistances, `R` to increase avaible data pool. Finally, the now filtered data is split into 80% training and 20% test. 
-2. **Defining and Running the Model:** Exact model defintion can be explored in more detail by looking directly at the python file but the underpinnings of the model used are tensorflow's Keras sequential and dense approaches. 
+1. **Formatting and Splitting:** The `all_clean.csv` file created in the previous section is converted into a Pandas database and all unnecessary antimicrobial columns will be removed (if the `organism` variable is NOT blank all irrelevant organism rows will be removed as well. Next, on line 50 all intermediary, `I`, resistances are converted to absolute resistances, `R` to increase the available data pool. Finally, the now filtered data is split into 80% training and 20% test. 
+2. **Defining and Running the Model:** Exact model definition can be explored in more detail by looking directly at the python file but the underpinnings of the model used are TensorFlow's Keras sequential and dense approaches. 
 3. **Thresholding and Plotting:** When queried the output of the model will most often return multiple possible resistant spectral graphs. To circumvent this a simple iterative loop was defined that tests 1,000 threshold values between 0.1 and 0.999 and selects the highest threshold value that returned a non-zero spectral graph. Next, the highest threshold spectral graph is plotted along with the ROC for the model.
 
 **Example Output:**
